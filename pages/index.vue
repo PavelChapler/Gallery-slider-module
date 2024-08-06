@@ -3,9 +3,5 @@
 </script>
 
 <template>
-  <div>
-    hel osd
-    <div>
-    </div>
-  </div>
+  <gallery />
 </template>
