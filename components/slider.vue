@@ -1,5 +1,31 @@
 <script setup lang="ts">
 import 'swiper/swiper-bundle.css';
+import { ref } from 'vue';
+
+const swiperRef = ref(null);
+
+const swiperInstance = ref();
+
+function onSwiper(swiper: object) {
+  swiperInstance.value = swiper;
+}
+
+function goToPrevSlide() {
+  if (swiperInstance.value) {
+    swiperInstance.value.slidePrev();
+  }
+}
+
+function goToNextSlide() {
+  if (swiperInstance.value) {
+    swiperInstance.value.slideNext();
+  }
+}
+
+const currentSlide = ref();
+function onSlideChange(swiper: object) {
+  currentSlide.value = swiper.realIndex;
+}
 
 interface ISlide {
   image: string,
@@ -33,6 +59,7 @@ withDefaults(defineProps<IProp>(), {
         :space-between="50"
         :centered-slides="true"
         :loop="true"
+        :modules="[SwiperNavigation, SwiperPagination]"
         @swiper="onSwiper"
         @slide-change="onSlideChange"
       >
@@ -40,6 +67,8 @@ withDefaults(defineProps<IProp>(), {
           <slot name="slide" :slide="slide"></slot>
         </swiper-slide>
       </swiper>
+      <slider-navbar @prev-slide="goToPrevSlide()" @next-slide="goToNextSlide" />
+      <slider-pagiantor :currentSlideIndex="currentSlide" :slidesLength="slides.length" />
     </div>
   </div>
 </template>
